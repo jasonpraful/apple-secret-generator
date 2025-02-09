@@ -1,14 +1,22 @@
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
-import { Command } from '@commander-js/extra-typings'
 
+/**
+ *
+ * @param key - Path to the private key. Derive from https://developer.apple.com/account/resources/authkeys/list (default: `key.p8`)
+ * @param days - Number of days the token is valid for. Maximum supported value is 180 (default: `180`)
+ * @param kid - Key ID - Identifier for the key. Derive from https://developer.apple.com/account/resources/authkeys/list
+ * @param team - Team ID - Identifier for the team. Derive from https://developer.apple.com/account/#/membership/
+ * @param client - Client ID - Identifier for the client. Derive from https://developer.apple.com/account/resources/identifiers/add/bundleId
+ * @returns Apple client secret
+ */
 export const generateAppleSecret = (
-  key: string,
-  days: string,
+  key: string = 'key.p8',
+  days: number = 180,
   kid: string,
   team: string,
   client: string
-) => {
+): string => {
   let privateKey
   try {
     privateKey = fs.readFileSync(key, 'utf8')
@@ -21,7 +29,7 @@ export const generateAppleSecret = (
     {
       iss: team,
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * parseInt(days),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * days,
       aud: 'https://appleid.apple.com',
       sub: client
     },
@@ -34,50 +42,4 @@ export const generateAppleSecret = (
     }
   )
   return ClientSecret
-}
-
-const main = () => {
-  const program = new Command()
-    .option(
-      '-k, --key <key>',
-      'Path to the private key (default: key.p8)',
-      'key.p8'
-    )
-    .option(
-      '-d, --days <days>',
-      'Number of days the token is valid for (default: 180)',
-      '180'
-    )
-    .option('-i, --kid <kid>', 'Key ID')
-    .option('-t, --team <team>', 'Team ID')
-    .option('-c, --client <client>', 'Client ID')
-    .parse(process.argv)
-
-  const opts = program.opts()
-
-  if (!opts.kid) {
-    console.error('Please provide the Key ID')
-    process.exit(1)
-  }
-  if (!opts.team) {
-    console.error('Please provide the Team ID')
-    process.exit(1)
-  }
-  if (!opts.client) {
-    console.error('Please provide the Client ID')
-    process.exit(1)
-  }
-
-  if (!fs.existsSync(opts.key)) {
-    console.error('Private key not found')
-    process.exit(1)
-  }
-
-  console.log(
-    generateAppleSecret(opts.key, opts.days, opts.kid, opts.team, opts.client)
-  )
-}
-
-if (require.main === module) {
-  main()
 }

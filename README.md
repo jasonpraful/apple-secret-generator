@@ -2,8 +2,20 @@
 
 ## Quickstart
 
+As an executable:
+
 ```bash
 npx @jasonpraful/apple-secret-generator --help
+```
+
+As a library:
+
+```js
+import { generateSecret } from '@jasonpraful/apple-secret-generator'
+
+const secret = generateAppleSecret(key, days, kid, team, client)
+
+console.log(secret) // JWT Token
 ```
 
 ## Usage

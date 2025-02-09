@@ -1,10 +1,12 @@
 {
   "name": "@jasonpraful/apple-secret-generator",
   "description": "Apple Secret Generator - Used to generate Apple Secrets for Signin with Apple",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "private": false,
-  "main": "./dist/index.mjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "bin": "./bin/index.js",
   "keywords": [
     "apple",
@@ -22,9 +24,15 @@
     "type": "git",
     "url": "https://github.com/jasonpraful/apple-secret-generator"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
-    "dev": "tsx src/index.ts",
-    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "build:package": "tsup src/index.ts --format cjs,esm --minify --dts",
+    "build:cli": "tsup src/cli.ts --out-dir bin --format cjs --minify",
+    "build": "npm run build:package && npm run build:cli",
     "test": "tsx --test --test-reporter spec ./src/*.test.ts",
     "ch:version": "changeset && changeset version"
   },
@@ -32,7 +40,7 @@
     "@changesets/cli": "^2.27.12",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.13.1",
-    "pkgroll": "^2.8.2",
+    "tsup": "^8.3.6",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   },

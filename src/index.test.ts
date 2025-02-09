@@ -4,7 +4,7 @@ import { describe, it, mock } from 'node:test'
 import fs from 'fs'
 import jwt from 'jsonwebtoken'
 
-import { generateAppleSecret } from './index'
+import { generateAppleSecret } from '.'
 
 const privateKey = `-----BEGIN EC PRIVATE KEY-----
 MHcCAQEEIAZxZAgU6MNzjz2uSBxtGhKGbtJvJzwzlcJmprnAcupxoAoGCCqGSM49
@@ -19,7 +19,7 @@ describe('appleSecretGenerator', () => {
   it('generates a valid Apple client secret', () => {
     assert.strictEqual(fs.readFileSync('key', 'utf8'), privateKey)
     assert.strictEqual(Date.now(), 1735689600000)
-    const jwtToken = generateAppleSecret('key', '180', 'kid', 'team', 'client')
+    const jwtToken = generateAppleSecret('key', 180, 'kid', 'team', 'client')
     assert.strictEqual(
       JSON.stringify(jwt.verify(jwtToken, privateKey)),
       JSON.stringify({
