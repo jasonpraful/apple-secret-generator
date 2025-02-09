@@ -1,0 +1,46 @@
+{
+  "name": "@jasonpraful/apple-secret-generator",
+  "description": "Apple Secret Generator - Used to generate Apple Secrets for Signin with Apple",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": false,
+  "main": "./dist/index.mjs",
+  "bin": "./bin/index.js",
+  "keywords": [
+    "apple",
+    "secret",
+    "signinwithapple",
+    "signin",
+    "oauth",
+    "jwt"
+  ],
+  "author": {
+    "email": "jason.praful@gmail.com",
+    "name": "Jason Praful"
+  },
+  "repository": {
+    "url": "https://github.com/jasonpraful/apple-secret-generator"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "test": "tsx --test --test-reporter spec ./src/*.test.ts",
+    "ch:version": "changeset && changeset version"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.12",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/node": "^22.13.1",
+    "pkgroll": "^2.8.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^13.1.0",
+    "commander": "^13.1.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
